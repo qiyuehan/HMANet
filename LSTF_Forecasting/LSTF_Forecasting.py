@@ -11,46 +11,15 @@ from my_models.tools.tool import norm_data, getDataMatrix
 from my_models.tools.wavelet_without import wavelet_noising_column
 from utils.ELM_L import ELM_L
 
-# 去掉warning
 import warnings
 warnings.filterwarnings("ignore")
-'''输入长度为96，固定 2024-02-06(上传这个！！)
---data
-electricity.csv
---model_name
-ELC_new
---pre_train
-960
---seq_len
-96
---pred_len
-720
---fea_dim
-321
---patch_size
-16
---n_hidden_dim
-300
---train_percent
-0.7
---epochs
-50
---batch_size
-32
---patience
-3
---add_nodes
-5
---test_percent
-0.2
-'''
 
 def generate_blocks(num_group, x_enc_masked, patch_len, stride):
     seq_len = x_enc_masked.shape[1]
     tgt_len = patch_len + stride * (num_group - 1)
     s_begin = seq_len - tgt_len
 
-    xb = x_enc_masked[:, s_begin:, :]  # xb: [bs x tgt_len x nvars]真正参与计算的矩阵，这也是目标值y
+    xb = x_enc_masked[:, s_begin:, :] 
     x_block = xb.unfold(dimension=1, size=patch_len, step=stride).transpose(-1,-2)  # xb: [bs x num_patch x n_vars x patch_len]
     return x_block
 
