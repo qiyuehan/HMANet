@@ -5,7 +5,6 @@ do
   python -u LSTF_Forecasting.py \
   --data ETTh1.csv \
   --model_name ETTh1 \
-  --pre_train 960 \
   --seq_len 96 \
   --pred_len $pred_len$ \
   --fea_dim 7 \
@@ -22,7 +21,6 @@ do
   python -u LSTF_Forecasting.py \
   --data ETTh2.csv \
   --model_name ETTh2 \
-  --pre_train 960 \
   --seq_len 96 \
   --pred_len $pred_len$ \
   --fea_dim 7 \
@@ -38,7 +36,6 @@ do
   python -u LSTF_Forecasting.py \
   --data ETTm1.csv \
   --model_name ETTm1 \
-  --pre_train 960 \
   --seq_len 96 \
   --pred_len $pred_len$ \
   --fea_dim 7 \
@@ -54,7 +51,6 @@ do
   python -u LSTF_Forecasting.py \
   --data ETTm2.csv \
   --model_name ETTm2 \
-  --pre_train 960 \
   --seq_len 96 \
   --pred_len $pred_len$ \
   --fea_dim 7 \
