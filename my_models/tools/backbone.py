@@ -41,25 +41,13 @@ class Model(nn.Module):
                                                   dilation_rates=configs.dilation_rate)
 
         self.ff = nn.Sequential(nn.Conv2d(self.num_group, self.num_group, kernel_size=3, padding=1, stride=1),
-                                # nn.LeakyReLU()
-                                nn.Dropout(configs.dropout),
-                                # nn.BatchNorm2d(self.num_group)
-
-                                )
-        # self.conv2d = nn.Conv2d(self.num_group*2, self.num_group, kernel_size=3, padding=1, stride=1)
+                                nn.Dropout(configs.dropout) )
 
         self.bn = nn.BatchNorm2d(self.num_group)
         self.relu = nn.LeakyReLU()
         self.dropout = nn.Dropout(configs.dropout)
 
         self.proj = nn.Linear(self.pre_train, self.pre_train)
-        # self.proj = nn.Linear(configs.d_model, self.kernel[0])
-
-
-        self.patch_embedding = PatchEmbedding(
-                     configs.d_model, patch_len=self.kernel[0],stride=1, padding=0, dropout=configs.dropout)
-
-        # self.W_pos = my_positional_encoding(learn_pe=True, q_len=self.num_group, d_model=self.kernel[0])  # (42, 128)
 
         self.share_p = nn.Conv2d(self.num_group, self.num_group, 1)
         self.block_linear = nn.Linear(self.num_group, self.num_group)
@@ -87,29 +75,11 @@ class Model(nn.Module):
         b, num_p,n, patch_len = x_patch_masked.shape
         group_inner = self.share_p(x_patch_masked)
 
-        '''
-        # Use Linear
-        x_in = x_patch_masked.reshape(b, num_p, -1).permute(0, 2, 1)
-        group_inner = self.share_p(x_in)  # Conv2d(60, 120, kernel_size=(1, 1), stride=(1, 1))
-        group_inner = group_inner.permute(0, 2, 1).reshape(b, self.num_group, n, patch_len)
-        '''
+    
         # Deformable conv
-        mul_deformabel = self.mul_deformable_conv(x_patch_masked)  # [32, 88, 8, 12]
+        mul_deformabel = self.mul_deformable_conv(x_patch_masked)  
 
-        # mul_ori_deformable = self.mul_deformable_conv(ori_patch_masked)
-        # Vision deformable start
-        # print(x_patch_masked[0][0])
-        # plot_layer(mask_data[0], 'Mask Data')
-        # def_layer = mul_deformabel[0][0] + mul_deformabel[0][1]
-        # def_layer = def_layer.cpu().detach().numpy()
-        # if i == 0 or i == 7 or i == 18:
-        #     name = "Deformable_ETTh2" + str(epoch) + "_" + str(i)
-        #     plot_layer(def_layer, name)
-        # # end
-
-        # representation
-        # repres = group_inner + group_inner * torch.softmax(mul_deformabel, dim=1) #[32, 88, 8, 12]
-        repres = group_inner + x_patch_masked * torch.softmax(mul_deformabel, dim=1) #[32, 88, 8, 12]
+        repres = group_inner + x_patch_masked * torch.softmax(mul_deformabel, dim=1) 
 
         repres = self.ff(repres)
 
