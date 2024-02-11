@@ -2,8 +2,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from my_models.tools.Deformable_attn import deformable_LKA_Attention
-from my_models.tools.Patch_embed import TokenEmbedding, PositionalEmbedding, PatchEmbedding
 from my_models.tools.def_depth_conv import Def_dep
 from my_models.tools.multi_deformable_conv import Multi_Def_Conv
 import matplotlib.pyplot as plt
