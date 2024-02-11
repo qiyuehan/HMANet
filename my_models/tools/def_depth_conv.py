@@ -21,7 +21,6 @@ class Def_dep(nn.Module):
         self.bn = nn.BatchNorm2d(out_size)
         self.relu = nn.LeakyReLU()
 
-    # 深度可分离卷积
     def forward(self, x):
         x1 = self.depth_conv(x)
         x2 = self.point_conv(x1)
