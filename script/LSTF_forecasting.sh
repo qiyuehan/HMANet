@@ -2,9 +2,9 @@
 
 for pred_len in 96 192 336 720
 do
-  python -u LSTF_forecasting_96.py \
+  python -u LSTF_Forecasting.py \
   --data ETTh1.csv \
-  --model_name ETTh1_new \
+  --model_name ETTh1 \
   --pre_train 960 \
   --seq_len 96 \
   --pred_len $pred_len$ \
@@ -19,9 +19,9 @@ do
   --test_percent 0.2
 
 
-  python -u LSTF_forecasting_96.py \
+  python -u LSTF_Forecasting.py \
   --data ETTh2.csv \
-  --model_name ETTh2_new \
+  --model_name ETTh2 \
   --pre_train 960 \
   --seq_len 96 \
   --pred_len $pred_len$ \
@@ -35,9 +35,9 @@ do
   --add_nodes 5 \
   --test_percent 0.2
 
-  python -u LSTF_forecasting_96.py \
+  python -u LSTF_Forecasting.py \
   --data ETTm1.csv \
-  --model_name ETTm1_new_0.7 \
+  --model_name ETTm1 \
   --pre_train 960 \
   --seq_len 96 \
   --pred_len $pred_len$ \
@@ -51,9 +51,9 @@ do
   --add_nodes 5 \
   --test_percent 0.2
 
-  python -u LSTF_forecasting_96.py \
+  python -u LSTF_Forecasting.py \
   --data ETTm2.csv \
-  --model_name ETTm2_new \
+  --model_name ETTm2 \
   --pre_train 960 \
   --seq_len 96 \
   --pred_len $pred_len$ \
