@@ -14,43 +14,13 @@ from utils.SLFN import SLFNet
 
 import warnings
 warnings.filterwarnings("ignore")
-'''输入长度为96，固定 2024-02-06(上传这个！！)
---data
-electricity.csv
---model_name
-ELC_new
---pre_train
-960
---seq_len
-96
---pred_len
-720
---fea_dim
-321
---patch_size
-16
---n_hidden_dim
-300
---train_percent
-0.7
---epochs
-50
---batch_size
-32
---patience
-3
---add_nodes
-5
---test_percent
-0.2
-'''
-# 不同的输入测试
+
 def generate_blocks(num_group, x_enc_masked, patch_len, stride):
     seq_len = x_enc_masked.shape[1]
     tgt_len = patch_len + stride * (num_group - 1)
     s_begin = seq_len - tgt_len
-    xb = x_enc_masked[:, s_begin:, :]  # xb: [bs x tgt_len x nvars]真正参与计算的矩阵，这也是目标值y
-    x_block = xb.unfold(dimension=1, size=patch_len, step=stride).transpose(-1,-2)  # xb: [bs x num_patch x n_vars x patch_len]
+    xb = x_enc_masked[:, s_begin:, :]  
+    x_block = xb.unfold(dimension=1, size=patch_len, step=stride).transpose(-1,-2) 
     return x_block
 
 
@@ -60,7 +30,7 @@ def main():
     parser = argparse.ArgumentParser(description=' for Time Series Forecasting')
     # data loader
     parser.add_argument('--root_path', type=str,
-                        default=r'/Users/qiyuehan/Desktop/HMANet/dataset/', help='root path of the data file')
+                        default=r'dataset/', help='root path of the data file')
     parser.add_argument('--data', type=str, default='ETTh1.csv', help='data file')
     parser.add_argument('--checkpoint', type=str,
                         default=r'../checkpoint/',
@@ -72,19 +42,18 @@ def main():
     parser.add_argument('--fea_dim', type=int, default=7, help='output dim')
     # parser.add_argument('--mse_target', type=float, default=0.001, help='mse target')
     parser.add_argument('--epochs', type=int, default=20, help='epoch')
-    parser.add_argument('--patch_size', type=int, default=16, help='patch_len')  # 将数据沿着时间序列切分为几个块
+    parser.add_argument('--patch_size', type=int, default=16, help='patch_len')  
     parser.add_argument('--add_nodes', type=int, default=5, help='add hidden nodes per')
     parser.add_argument('--train_percent', type=float, default=0.7, help='split train data and val data')
-    parser.add_argument('--test_percent', type=float, default=0.2, help='split train data and val data')
+    parser.add_argument('--test_percent', type=float, default=0.2, help='split test data and val data')
     parser.add_argument('--patience', type=int, default=5, help='split train data and val data')
     parser.add_argument('--stride', type=int, default=1, help='split train data')
 
-    # 多于特征的数量
     parser.add_argument('--model_name', type=str, default='ETTh1', help='data model name')
-    parser.add_argument('--ext_nodes', type=int, default=5, help='enhance nodes')  # 每次增加的节点数
+    parser.add_argument('--ext_nodes', type=int, default=5, help='enhance nodes') 
 
     parser.add_argument('--batch_size', type=int, default=32, help='batch size of train input data')
-    parser.add_argument('--n_hidden_dim', type=int, default=1000, help='是初始hidden层数')
+    parser.add_argument('--n_hidden_dim', type=int, default=1000, help='the number of hidden nodes')
     # GPU
     parser.add_argument('--use_gpu', type=bool, default=True, help='use gpu')
     parser.add_argument('--gpu', type=int, default=0, help='gpu')
@@ -110,8 +79,6 @@ def main():
     train_data, test_data, _, _ = train_test_split(X_wave, Y_wave, test_size=args.test_percent, random_state=1)
     num_group = (max(args.pre_train, args.patch_size) - args.patch_size) // args.patch_size + 1
 
-    # x_ori, y_ori = getDataMatrix(seq_in, args.seq_len, args.pred_len, args.stride)
-    # _, ori_data, _, _ = train_test_split(x_ori, y_ori, test_size=args.test_percent, random_state=1)
 
     norm_ori = norm_data(seq_in)
     X_norm, Y_norm = getDataMatrix(norm_ori, args.seq_len, args.pred_len, args.stride)
@@ -131,13 +98,13 @@ def main():
     model_pre = torch.load(model_path, map_location=args.device)
     for param in model_pre.parameters():
         param.requires_grad = False
-    train_block = torch.split(in_train, args.batch_size, dim=0)  # [13551, 768, 8]
-    batch_train = torch.stack(train_block[:-1], dim=0)  # [423, 32, 768, 8]
-    batch_tar_train = torch.stack(torch.split(tar_train, args.batch_size, dim=0)[:-1], dim=0)  # [423, 32, 192, 8]
+    train_block = torch.split(in_train, args.batch_size, dim=0)  
+    batch_train = torch.stack(train_block[:-1], dim=0)  
+    batch_tar_train = torch.stack(torch.split(tar_train, args.batch_size, dim=0)[:-1], dim=0) 
     # Test
-    test_block = torch.split(in_test, args.batch_size, dim=0)  # [3388, 768, 8]
+    test_block = torch.split(in_test, args.batch_size, dim=0)  
     batch_test = torch.stack(test_block[:-1], dim=0)  # [105, 32, 768, 8]
-    batch_tar_test = torch.stack(torch.split(tar_test, args.batch_size, dim=0)[:-1], dim=0)  # [105,32,192,8]
+    batch_tar_test = torch.stack(torch.split(tar_test, args.batch_size, dim=0)[:-1], dim=0)
     batch_train_ori = batch_train.float().to(args.device)
     batch_tar_train_ori = batch_tar_train.float().to(args.device)
     batch_test_ori = batch_test.float().to(args.device)
