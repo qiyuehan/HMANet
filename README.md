@@ -41,34 +41,34 @@ For example, if you want to get the multivariate forecasting results for ETT dat
 bash ./script/main.sh
 ```
 
-## HMANet Architecture
+## 1. HMANet Architecture
 ![alt text](Fig/architecture.jpg)
 
-## Deformable Attention
+## 2. Deformable Attention
 ![alt text](Fig/deformableAtt.jpg)
 
-## Main Result
+## 3. Main Result
 
 HMANet: input-{512}-output-{96, 192, 336, 720}; 
 ![alt text](Fig/main_512.jpg)
 HMANet1: input-{96}-output-{96, 192, 336, 720}
 ![alt text](Fig/main_96.jpg)
 
-## Ablation Studies
+## 4. Ablation Studies
 ![alt text](Fig/ablationstudies.jpg)
 
 ## APPENDIX
 
-### 1. Multivariate Results
+## 1. Multivariate Results
 ![alt text](Fig/appendix1.jpg)
 
-### 2. Univariate Results
+## 2. Univariate Results
 ![alt text](Fig/appendixUni.jpg)
 
-### 3. Short-term Time Series Forecasting Results
-![alt text](Fig/appendixShort)
+## 3. Short-term Time Series Forecasting Results
+![alt text](Fig/appendixShort.jpg)
 
-## Acknowledgement
+# Acknowledgement
 
 We appreciate the following github repos a lot for their valuable code base or datasets:
 
