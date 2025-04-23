@@ -13,9 +13,9 @@ parser.add_argument('--model', type=str, required=False, default='HMANet')
 
 # data loader
 parser.add_argument('--data', type=str, required=False, default='custom', help='dataset type')
-parser.add_argument('--root_path', type=str, default=r'C:\Users\11848\Desktop\TNNLS P2\HMANet_Upload\dataset\\', help='root path of the data file')
+parser.add_argument('--root_path', type=str, default=r'.\dataset\', help='root path of the data file')
 parser.add_argument('--data_path', type=str, default='ETTh1.csv', help='data file')
-parser.add_argument('--checkpoints', type=str, default=r'C:\Users\11848\Desktop\TNNLS P2\HMANet_Upload\Pre_Train\PreTrain_checkpoint\\', help='location of model checkpoints')
+parser.add_argument('--checkpoints', type=str, default=r'.\Pre_Train\PreTrain_checkpoint\', help='location of model checkpoints')
 
 # forecasting task
 parser.add_argument('--pre_train', type=int, default=512, help='input sequence length')
