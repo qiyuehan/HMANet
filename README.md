@@ -18,30 +18,55 @@ pip install -r requirements.txt
 
 2. Download data. You can obtain all the eight benchmarks from [baidupan](https://pan.baidu.com/s/19lqv1VLG9VBx7Nh04L1u0A?pwd=mswn 
 )password：mswn. **All the datasets are well pre-processed** and can be used easily.
-3. Train the model. We provide the experiment scripts of all benchmarks under the folder `./scripts`. You can reproduce the experiment results by:
+
+3.Pre-training. The scirpt pretrain_main.py is to train the HMANet. If you want to obtain the pre-trained model for the ETTh1 dataset, simply run the following command, and you will be able to open the Pre_Train/PreTrain_checkpoint folder to view the pre-trained model.
+The model will be saved to the "Pre_Train\PreTrain_checkpoint" folder for the downstream tasks. There are several other parameters can be set in the pretrain_main.py script.
+
 ```bash
-bash ./scripts/LSTF_Forcasting.sh
+python pretrain_main.py
+--pre_train 512
+--data custom
+--data_path ETTh1.csv
+--model_id ETTh1
+--enc_in 7
+--patch_len 16
+--train_percent 0.5
+--batch_size 32
+
 ```
+4.Downstream Forecasting Task. The scripts for downstream forecasting tasks are located in the script directory. 
+For example, if you want to get the multivariate forecasting results for ETT dataset, just run the following command, and you can open ./result_LSTF.txt to see the results once the training is done:
+
+```bash
+bash ./script/main.sh
+```
+
+## HMANet Architecture
+![alt text](Fig/architecture.jpg)
+
+## Deformable Attention
+![alt text](Fig/deformableAtt.jpg)
 
 ## Main Result
 
 HMANet: input-{512}-output-{96, 192, 336, 720}; 
+![alt text](Fig/main_512.jpg)
 HMANet1: input-{96}-output-{96, 192, 336, 720}
-![alt text](Pic/MAIN_RESULT.jpg)
+![alt text](Fig/main_96.jpg)
+
+## Ablation Studies
+![alt text](Fig/ablationstudies.jpg)
 
 ## APPENDIX
 
-### 1. Additional Models
-![alt text](Pic/Appendix_model.pic.jpg)
+### 1. Multivariate Results
+![alt text](Fig/appendix1.jpg)
 
-### 2. Additional Datasets 
-![alt text](Pic/Appendix_ETT.jpg)
+### 2. Univariate Results
+![alt text](Fig/appendixUni.jpg)
 
-## 3. Deformable attention
-![alt text](Pic/deformable_attention.jpg)
-
-## 4. Different input length for pre-training model
-![alt text](Pic/diff_input_pretraining.jpg)
+### 3. Short-term Time Series Forecasting Results
+![alt text](Fig/appendixShort)
 
 ## Acknowledgement
 
