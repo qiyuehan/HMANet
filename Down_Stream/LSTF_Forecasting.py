@@ -25,10 +25,10 @@ def main():
     torch.manual_seed(0)
     parser = argparse.ArgumentParser(description=' for Time Series Forecasting')
     parser.add_argument('--root_path', type=str,
-                        default=r'C:\Users\11848\Desktop\TNNLS P2\HMANet_Modi\dataset\\', help='root path of the data file')
+                        default=r'.\dataset\', help='root path of the data file')
     parser.add_argument('--data', type=str, default='ETTh1.csv', help='data file')
     parser.add_argument('--PreTrain_checkpoint', type=str,
-                        default=r'C:\Users\11848\Desktop\TNNLS P2\HMANet_Upload\Pre_Train\PreTrain_checkpoint\\',
+                        default=r'.\Pre_Train\PreTrain_checkpoint\',
                         help='model path')
     parser.add_argument('--seq_len', type=int, default=96, help='input sequence length=seq_len-pred_len')
     parser.add_argument('--pre_train', type=int, default=512, help='input sequence length=seq_len-pred_len')
