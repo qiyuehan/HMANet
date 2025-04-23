@@ -1,0 +1,10 @@
+einops==0.4.1
+patool==1.12
+reformer_pytorch==1.4.4
+scikit_learn==1.2.1
+sktime==0.4.1
+sympy==1.11.1
+tqdm==4.64.0
+torchvision==0.14.0
+torch==1.13.0
+
