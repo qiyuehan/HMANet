@@ -3,6 +3,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from mamba_ssm import Mamba
 
 np.random.seed(0)
 torch.manual_seed(0)
@@ -67,3 +68,31 @@ class SLFNet(nn.Module):
     H = self.forward_L(features)
     prediction = torch.matmul(H, beta)
     return prediction
+
+
+class IDMamba_Block(L.LightningModule):
+    def __init__(self, configs, dim, drop=0.):
+        super().__init__()
+        self.configs = configs
+        self.act = nn.SiLU()
+        self.drop = nn.Dropout(drop)
+        self.conv = nn.Conv1d(dim, dim, 1)
+        self.mamba = Mamba(dim, d_state=self.configs.d_state, d_conv_1=self.configs.d_conv_1, d_conv_2=self.configs.d_conv_2, expand=self.configs.e_fact)
+        
+    def forward(self, x):
+        x_act = self.act(x)
+        x1, x2 = self.mamba(x)
+        x1_1 = self.act(x1)
+        x1_2 = self.drop(x1_1)
+
+        x2_1 = self.act(x2)
+        x2_2 = self.drop(x2_1)
+
+        out1 = x1 * x2_2 * x_act
+        out2 = x2 * x1_2 * x_act
+
+        x = out1 + out2
+        x = x.transpose(2, 1)
+        x = self.conv(x)
+        x = x.transpose(1, 2)
+        return x
