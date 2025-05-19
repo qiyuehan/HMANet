@@ -206,7 +206,7 @@ def test_Result(args, net, model_pre, b_beta, batch_test, batch_test_ori, batch_
         loss = criterion(target, output.cpu())
         test_loss.append(loss)
     print("Test Result --> Mean_MSE:", np.mean(test_mse), "Mean_MAE:", np.mean(test_mae))
-    f = open(r"C:\Users\11848\Desktop\TNNLS P2\HMANet_Upload\script\result_LSTF.txt", 'a')
+    f = open(r".\result_LSTF.txt", 'a')
     f.write(args.model_name +'_'+str(args.pred_len) + "  \n")
     f.write('mse:{}, mae:{}'.format(np.mean(test_mse), np.mean(test_mae)))
     f.write('\n')
