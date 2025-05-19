@@ -7,4 +7,4 @@ sympy==1.11.1
 tqdm==4.64.0
 torchvision==0.14.0
 torch==1.13.0
-
+mamba-ssm==1.2.0
