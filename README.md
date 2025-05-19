@@ -69,6 +69,7 @@ HMANet1: input-{96}-output-{96, 192, 336, 720}
 ![alt text](Fig/appendixShort.jpg)
 
 # Acknowledgement
+The implementations of several baseline models are provided in the BaselineModels folder, with the source code obtained from [TimesNet](https://github.com/thuml/Time-Series-Library).
 
 We appreciate the following github repos a lot for their valuable code base or datasets:
 
